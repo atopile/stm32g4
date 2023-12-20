@@ -1,0 +1,11 @@
+component TAXM8M4RDBCCT2T:
+    # component TAXM8M4RDBCCT2T
+    footprint = "OSC-SMD_4P-L3.2-W2.5-BL"
+    lcsc_id = "C400090"
+    mpn = "C400090"
+    # pins
+    signal gnd ~ pin 4
+    gnd ~ pin 2
+    signal in ~ pin 3
+    signal out ~ pin 1
+

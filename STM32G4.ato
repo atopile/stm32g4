@@ -1,19 +1,18 @@
 import STM32G431CBU6 from "elec/src/STM32G431CBU6.ato"
+import TAXM8M4RDBCCT2T from "elec/src/TAXM8M4RDBCCT2T.ato"
 import Resistor from "generics/resistors.ato"
 import Capacitor from "generics/capacitors.ato"
-import NoButton from "button.ato"
-import TC2050 from "TC2050.ato"
-import can_xcvr from "SN65HVD230DR.ato"
-import indicator_led from "indicator_led.ato"
-import Vdiv from "vdiv.ato"
-import SPI from "generics.ato"
-import JTAG from "generics.ato"
-import I2C from "generics.ato"
-import USB2 from "generics.ato"
-import Power from "generics.ato"
-import CAN from "generics.ato"
-import ISOCAN from "generics.ato"
-import BLDC_3PWM from "generics.ato"
+import NoButton from "generics/buttons.ato"
+#import TC2050 from "TC2050.ato"
+import can_xcvr from "elec/src/SN65HVD230DR.ato"
+import Vdiv from "generics/vdivs.ato"
+import SPI from "generics/interfaces.ato"
+import JTAG from "generics/interfaces.ato"
+import I2C from "generics/interfaces.ato"
+import USB2 from "generics/interfaces.ato"
+import Power from "generics/interfaces.ato"
+import CAN from "generics/interfaces.ato"
+import ISOCAN from "generics/interfaces.ato"
 
 module STM32G431CBU6_kit:
     # Microcontroller
@@ -27,12 +26,6 @@ module STM32G431CBU6_kit:
     power.vcc ~ micro.VDD3
     power.vcc ~ micro.VREF
 
-    bldc_3pwm = new BLDC_3PWM
-    bldc_3pwm.phase_a ~ micro.PA0
-    bldc_3pwm.phase_b ~ micro.PA1
-    bldc_3pwm.phase_c ~ micro.PA2
-    bldc_3pwm.enable ~ micro.PA3
-
     # PA4 - DAQ for version
 
     # SPI interface
@@ -43,17 +36,17 @@ module STM32G431CBU6_kit:
     spi.cs ~ micro.PB11
 
     # JTAG interface
-    jtag = new JTAG
-    jtag.tck ~ micro.PA14
-    jtag.tdi ~ micro.PA15
-    jtag.tdo ~ micro.PB3
-    jtag.tms ~ micro.PA13
-    jtag.reset ~ micro.PG10_NRST
+    # jtag = new JTAG
+    # jtag.tck ~ micro.PA14
+    # jtag.tdi ~ micro.PA15
+    # jtag.tdo ~ micro.PB3
+    # jtag.tms ~ micro.PA13
+    # jtag.reset ~ micro.PG10_NRST
 
 
-    tag_connect = new TC2050
-    tag_connect.power ~ power
-    tag_connect.jtag ~ jtag
+    # tag_connect = new TC2050
+    # tag_connect.power ~ power
+    # tag_connect.jtag ~ jtag
 
     i2c = new I2C
     i2c.sda ~ micro.PB9
@@ -113,14 +106,13 @@ module STM32G431CBU6_kit:
     c_bp_3v_1uf.p2 ~ power.gnd
 
     # Oscillator
-    osc = new Oscillator
-    osc.value = "8Mhz"
+    osc = new TAXM8M4RDBCCT2T
     c_osc_1 = new Capacitor
     c_osc_1.value = "20pF"
     c_osc_2 = new Capacitor
     c_osc_2.value = "20pF"
     r_osc = new Resistor
-    r_osc.value = "220"
+    r_osc.value = "220R"
 
     micro.PF0_OSC_IN ~ osc.in
     micro.PF1_OSC_OUT ~ r_osc.p1
@@ -150,14 +142,4 @@ module STM32G431CBU6_kit:
     r_usb_d_plus.p2 ~ usb.dp
     micro.PA11 ~ r_usb_d_minus.p1
     r_usb_d_minus.p2 ~ usb.dm
-
-    # Current sense
-    signal a_isense ~ micro.PB0
-    signal b_isense ~ micro.PB1
-    signal c_isense ~ micro.PB2
-    # Inputs
-    signal vin_sense ~ micro.PB12
-    signal temp_fet ~ micro.PA9
-    signal enum_sw ~ micro.PA5
-    signal led_pixel ~ micro.PA7
 
