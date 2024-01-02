@@ -72,10 +72,6 @@ module STM32G431CBU6_kit:
     canbus.isocan ~ isocan
     canbus.power ~ power
 
-    debug_led_1 = new indicator_led
-    debug_led_1.input ~ micro.PB4
-    debug_led_1.gnd ~ power.gnd
-
     # Bypass capacitors
     c_bp_3v_100nf_1 = new Capacitor
     c_bp_3v_100nf_1.value = "100nF"
