@@ -21,10 +21,8 @@ module STM32G431CBU6_kit:
     power = new Power
     power.gnd ~ micro.EP
     power.vcc ~ micro.VDDA
-    power.vcc ~ micro.VDD1
-    power.vcc ~ micro.VDD2
-    power.vcc ~ micro.VDD3
-    power.vcc ~ micro.VREF
+    power.vcc ~ micro.VDD
+    power.vcc ~ micro.VREF_
 
     # PA4 - DAQ for version
 
