@@ -13,6 +13,10 @@ import USB2 from "generics/interfaces.ato"
 import Power from "generics/interfaces.ato"
 import CAN from "generics/interfaces.ato"
 import ISOCAN from "generics/interfaces.ato"
+component R0402 from Resistor:
+    footprint = "R0402"
+component C0402 from Capacitor:
+    footprint = "C0402"
 
 module STM32G431CBU6_kit:
     # Microcontroller
@@ -51,11 +55,11 @@ module STM32G431CBU6_kit:
     i2c.scl ~ micro.PB8_BOOT0
 
     # i2c pullups
-    sda_pullup = new Resistor
+    sda_pullup = new R0402
     sda_pullup.p1 ~ i2c.sda
     sda_pullup.p2 ~ power.vcc
 
-    scl_pullup = new Resistor
+    scl_pullup = new R0402
     scl_pullup.p1 ~ i2c.scl
     scl_pullup.p2 ~ power.vcc
 
@@ -73,16 +77,16 @@ module STM32G431CBU6_kit:
     canbus.power ~ power
 
     # Bypass capacitors
-    c_bp_3v_100nf_1 = new Capacitor
+    c_bp_3v_100nf_1 = new C0402
     c_bp_3v_100nf_1.value = "100nF"
-    c_bp_3v_100nf_2 = new Capacitor
+    c_bp_3v_100nf_2 = new C0402
     c_bp_3v_100nf_2.value = "100nF"
-    c_bp_3v_100nf_3 = new Capacitor
+    c_bp_3v_100nf_3 = new C0402
     c_bp_3v_100nf_3.value = "100nF"
-    c_bp_3v_100nf_4 = new Capacitor
+    c_bp_3v_100nf_4 = new C0402
     c_bp_3v_100nf_4.value = "100nF"
 
-    c_bp_3v_1uf = new Capacitor
+    c_bp_3v_1uf = new C0402
     c_bp_3v_1uf.value = "1uF"
 
     c_bp_3v_100nf_1.p1 ~ power.vcc
@@ -101,11 +105,11 @@ module STM32G431CBU6_kit:
 
     # Oscillator
     osc = new TAXM8M4RDBCCT2T
-    c_osc_1 = new Capacitor
+    c_osc_1 = new C0402
     c_osc_1.value = "20pF"
-    c_osc_2 = new Capacitor
+    c_osc_2 = new C0402
     c_osc_2.value = "20pF"
-    r_osc = new Resistor
+    r_osc = new R0402
     r_osc.value = "220R"
 
     micro.PF0_OSC_IN ~ osc.in
@@ -122,11 +126,11 @@ module STM32G431CBU6_kit:
     # USB interface
     usb = new USB2
 
-    r_usb_d_plus = new Resistor
+    r_usb_d_plus = new R0402
     r_usb_d_plus.value = "27R"
-    r_usb_d_minus = new Resistor
+    r_usb_d_minus = new R0402
     r_usb_d_minus.value = "27R"
-    r_usb_pullup = new Resistor
+    r_usb_pullup = new R0402
     r_usb_pullup.value = "1k5"
 
     # maybe it should look like this: usb.dp ~ resistor1 ~ micro.PA12
