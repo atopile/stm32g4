@@ -27,15 +27,6 @@ module STM32G431CBU6_kit:
     power.vcc ~ micro.VDD
     power.vcc ~ micro.VREF_
 
-    # PA4 - DAQ for version
-
-    # SPI interface
-    spi = new SPI
-    spi.mosi ~ micro.PB15
-    spi.miso ~ micro.PB14
-    spi.sck ~ micro.PB13
-    spi.cs ~ micro.PB11
-
     # JTAG interface (SWD)
     # Hook this up to a connector along with gnd and 3v3 for programming
     swd = new SWD
