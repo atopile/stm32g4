@@ -1,5 +1,5 @@
+import CAN_TTL from "generics/interfaces.ato"
 import CAN from "generics/interfaces.ato"
-import ISOCAN from "generics/interfaces.ato"
 import Power from "generics/interfaces.ato"
 
 component SN65HVD230DR:
@@ -32,12 +32,12 @@ module can_xcvr:
     power.vcc ~ v_3_3
     power.gnd ~ gnd
 
+    can_ttl = new CAN_TTL
+    can_ttl.rx ~ can_rx
+    can_ttl.tx ~ can_tx
     can = new CAN
-    can.rx ~ can_rx
-    can.tx ~ can_tx
-    isocan = new ISOCAN
-    isocan.CANH ~ CANH
-    isocan.CANL ~ CANL
+    can.CANH ~ CANH
+    can.CANL ~ CANL
 
     xcvr.VCC ~ v_3_3
     xcvr.GND ~ gnd
@@ -59,16 +59,17 @@ module can_xcvr:
     xcvr.VREF ~ v_mid
     r_term_h = new Resistor
     r_term_h.footprint = "R0402"
-    r_term_h.value = "60R"
+    r_term_h.value = "56R"
     r_term_h.p1 ~ CANH
     r_term_h.p2 ~ v_mid
     r_term_l = new Resistor
     r_term_l.footprint = "R0402"
-    r_term_l.value = "60R"
+    r_term_l.value = "56R"
     r_term_l.p1 ~ CANL
     r_term_l.p2 ~ v_mid
     c_term = new Capacitor
     c_term.footprint = "C0402"
     c_term.value = "10nF"
+    c_term.mpn = "C15195"
     c_term.p1 ~ v_mid
     c_term.p2 ~ gnd

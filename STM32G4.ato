@@ -2,21 +2,20 @@ import STM32G431CBU6 from "elec/src/STM32G431CBU6.ato"
 import TAXM8M4RDBCCT2T from "elec/src/TAXM8M4RDBCCT2T.ato"
 import Resistor from "generics/resistors.ato"
 import Capacitor from "generics/capacitors.ato"
-import NoButton from "generics/buttons.ato"
-#import TC2050 from "TC2050.ato"
 import can_xcvr from "elec/src/SN65HVD230DR.ato"
-import Vdiv from "generics/vdivs.ato"
+import SWD from "generics/interfaces.ato"
 import SPI from "generics/interfaces.ato"
-import JTAG from "generics/interfaces.ato"
 import I2C from "generics/interfaces.ato"
 import USB2 from "generics/interfaces.ato"
 import Power from "generics/interfaces.ato"
+import CAN_TTL from "generics/interfaces.ato"
 import CAN from "generics/interfaces.ato"
-import ISOCAN from "generics/interfaces.ato"
 component R0402 from Resistor:
     footprint = "R0402"
+    value = "1k"
 component C0402 from Capacitor:
     footprint = "C0402"
+    value = "100n"
 
 module STM32G431CBU6_kit:
     # Microcontroller
@@ -37,55 +36,40 @@ module STM32G431CBU6_kit:
     spi.sck ~ micro.PB13
     spi.cs ~ micro.PB11
 
-    # JTAG interface
-    # jtag = new JTAG
-    # jtag.tck ~ micro.PA14
+    # JTAG interface (SWD)
+    # Hook this up to a connector along with gnd and 3v3 for programming
+    swd = new SWD
+    swd.swdio ~ micro.PA13
+    swd.swclk ~ micro.PA14
+    swd.gnd ~ power.gnd
+    swd.vcc ~ power.vcc
     # jtag.tdi ~ micro.PA15
     # jtag.tdo ~ micro.PB3
-    # jtag.tms ~ micro.PA13
-    # jtag.reset ~ micro.PG10_NRST
+    # jtag.reset ~ micro.PG10_NRST # has 40k pullup
 
-
-    # tag_connect = new TC2050
-    # tag_connect.power ~ power
-    # tag_connect.jtag ~ jtag
-
-    i2c = new I2C
-    i2c.sda ~ micro.PB9
-    i2c.scl ~ micro.PB8_BOOT0
-
-    # i2c pullups
-    sda_pullup = new R0402
-    sda_pullup.p1 ~ i2c.sda
-    sda_pullup.p2 ~ power.vcc
-
-    scl_pullup = new R0402
-    scl_pullup.p1 ~ i2c.scl
-    scl_pullup.p2 ~ power.vcc
+    # boot0 pulldown
+    boot0_pulldown = new R0402
+    boot0_pulldown.p1 ~ micro.PB8_BOOT0
+    boot0_pulldown.p2 ~ power.gnd
 
     # same as moteus
-    can = new CAN
-    can.rx ~ micro.PB5
-    can.tx ~ micro.PB6
+    can_ttl = new CAN_TTL
+    can_ttl.rx ~ micro.PB5
+    can_ttl.tx ~ micro.PB6
 
-    isocan = new ISOCAN
+    can = new CAN
 
     # CANBUS Comms
     canbus = new can_xcvr
+    canbus.can_ttl ~ can_ttl
     canbus.can ~ can
-    canbus.isocan ~ isocan
     canbus.power ~ power
 
     # Bypass capacitors
     c_bp_3v_100nf_1 = new C0402
-    c_bp_3v_100nf_1.value = "100nF"
     c_bp_3v_100nf_2 = new C0402
-    c_bp_3v_100nf_2.value = "100nF"
     c_bp_3v_100nf_3 = new C0402
-    c_bp_3v_100nf_3.value = "100nF"
     c_bp_3v_100nf_4 = new C0402
-    c_bp_3v_100nf_4.value = "100nF"
-
     c_bp_3v_1uf = new C0402
     c_bp_3v_1uf.value = "1uF"
 
@@ -93,14 +77,12 @@ module STM32G431CBU6_kit:
     c_bp_3v_100nf_2.p1 ~ power.vcc
     c_bp_3v_100nf_3.p1 ~ power.vcc
     c_bp_3v_100nf_4.p1 ~ power.vcc
-
     c_bp_3v_1uf.p1 ~ power.vcc
 
     c_bp_3v_100nf_1.p2 ~ power.gnd
     c_bp_3v_100nf_2.p2 ~ power.gnd
     c_bp_3v_100nf_3.p2 ~ power.gnd
     c_bp_3v_100nf_4.p2 ~ power.gnd
-
     c_bp_3v_1uf.p2 ~ power.gnd
 
     # Oscillator
@@ -131,7 +113,7 @@ module STM32G431CBU6_kit:
     r_usb_d_minus = new R0402
     r_usb_d_minus.value = "27R"
     r_usb_pullup = new R0402
-    r_usb_pullup.value = "1k5"
+    r_usb_pullup.value = "1.5k"
 
     # maybe it should look like this: usb.dp ~ resistor1 ~ micro.PA12
     micro.PA12 ~ r_usb_pullup.p1
