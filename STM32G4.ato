@@ -97,8 +97,8 @@ module STM32G431CBU6_kit:
     c_osc_2.p2 ~ power.gnd
 
     # USB interface
-    usb = new USB2
-
+    usb = new USB_PD
+    usb.gnd ~ power.gnd
     r_usb_d_plus = new R0402
     r_usb_d_plus.value = "27R"
     r_usb_d_minus = new R0402
@@ -106,7 +106,6 @@ module STM32G431CBU6_kit:
     r_usb_pullup = new R0402
     r_usb_pullup.value = "1.5k"
 
-    # maybe it should look like this: usb.dp ~ resistor1 ~ micro.PA12
     micro.PA12 ~ r_usb_pullup.p1
     power.vcc ~ r_usb_pullup.p2
     micro.PA12 ~ r_usb_d_plus.p1
@@ -114,3 +113,8 @@ module STM32G431CBU6_kit:
     micro.PA11 ~ r_usb_d_minus.p1
     r_usb_d_minus.p2 ~ usb.dm
 
+    # USB-PD stuff
+    usb.cc1 ~ micro.PB6 #CC1 needed for PD comms
+    usb.cc1 ~ micro.PA9 #DBCC1 only needed to power up with no other voltage source
+    usb.cc2 ~ micro.PB4 #CC2 needed for PD comms
+    usb.cc2 ~ micro.PA10 #DBCC2 only needed to power up with no other voltage source
