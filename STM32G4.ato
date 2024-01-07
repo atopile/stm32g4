@@ -6,7 +6,7 @@ import can_xcvr from "elec/src/SN65HVD230DR.ato"
 import SWD from "generics/interfaces.ato"
 import SPI from "generics/interfaces.ato"
 import I2C from "generics/interfaces.ato"
-import USB2 from "generics/interfaces.ato"
+import USB_PD from "generics/interfaces.ato"
 import Power from "generics/interfaces.ato"
 import CAN_TTL from "generics/interfaces.ato"
 import CAN from "generics/interfaces.ato"
@@ -33,7 +33,6 @@ module STM32G431CBU6_kit:
     swd.swdio ~ micro.PA13
     swd.swclk ~ micro.PA14
     swd.gnd ~ power.gnd
-    swd.vcc ~ power.vcc
     # jtag.tdi ~ micro.PA15
     # jtag.tdo ~ micro.PB3
     # jtag.reset ~ micro.PG10_NRST # has 40k pullup
@@ -42,19 +41,6 @@ module STM32G431CBU6_kit:
     boot0_pulldown = new R0402
     boot0_pulldown.p1 ~ micro.PB8_BOOT0
     boot0_pulldown.p2 ~ power.gnd
-
-    # same as moteus
-    can_ttl = new CAN_TTL
-    can_ttl.rx ~ micro.PB5
-    can_ttl.tx ~ micro.PB6
-
-    can = new CAN
-
-    # CANBUS Comms
-    canbus = new can_xcvr
-    canbus.can_ttl ~ can_ttl
-    canbus.can ~ can
-    canbus.power ~ power
 
     # Bypass capacitors
     c_bp_3v_100nf_1 = new C0402
@@ -96,6 +82,18 @@ module STM32G431CBU6_kit:
     c_osc_1.p2 ~ power.gnd
     c_osc_2.p2 ~ power.gnd
 
+    # CANBUS Comms
+    can_ttl = new CAN_TTL
+    can_ttl.rx ~ micro.PB5
+    can_ttl.tx ~ micro.PB6
+
+    can = new CAN
+
+    canbus = new can_xcvr
+    canbus.can_ttl ~ can_ttl
+    canbus.can ~ can
+    canbus.power ~ power
+    
     # USB interface
     usb = new USB_PD
     usb.gnd ~ power.gnd
