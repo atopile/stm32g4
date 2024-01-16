@@ -10,11 +10,15 @@ import USB_PD from "generics/interfaces.ato"
 import Power from "generics/interfaces.ato"
 import CAN_TTL from "generics/interfaces.ato"
 import CAN from "generics/interfaces.ato"
+import BLDC_3PWM from "generics/interfaces.ato"
+
 component R0402 from Resistor:
     footprint = "R0402"
+    package = "0402"
     value = 1kohm +/- 5%
 component C0402 from Capacitor:
     footprint = "C0402"
+    package = "0402"
     value = 100nF +/- 25%
 
 module STM32G431CBU6_kit:
@@ -27,15 +31,40 @@ module STM32G431CBU6_kit:
     power.vcc ~ micro.VDD
     power.vcc ~ micro.VREF_
 
+    # BLDC driver interface
+    bldc_3pwm = new BLDC_3PWM
+    bldc_3pwm.phase_a ~ micro.PA0
+    bldc_3pwm.phase_b ~ micro.PA1
+    bldc_3pwm.phase_c ~ micro.PA2
+    bldc_3pwm.enable ~ micro.PA3
+
+    # SPI interface
+    spi = new SPI
+    spi.mosi ~ micro.PB15
+    spi.miso ~ micro.PB14
+    spi.sck ~ micro.PB13
+    spi.cs ~ micro.PB11
+
+    # i2c
+    i2c = new I2C
+    i2c.sda ~ micro.PB9
+    i2c.scl ~ micro.PB8_BOOT0
+
+    # i2c pullups
+    sda_pullup = new R0402
+    sda_pullup.p1 ~ i2c.sda
+    sda_pullup.p2 ~ power.vcc
+
+    scl_pullup = new R0402
+    scl_pullup.p1 ~ i2c.scl
+    scl_pullup.p2 ~ power.vcc
+
     # JTAG interface (SWD)
     # Hook this up to a connector along with gnd and 3v3 for programming
     swd = new SWD
     swd.swdio ~ micro.PA13
     swd.swclk ~ micro.PA14
     swd.gnd ~ power.gnd
-    # jtag.tdi ~ micro.PA15
-    # jtag.tdo ~ micro.PB3
-    # jtag.reset ~ micro.PG10_NRST # has 40k pullup
 
     # boot0 pulldown
     boot0_pulldown = new R0402
