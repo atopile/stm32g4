@@ -10,12 +10,17 @@ import USB_PD from "generics/interfaces.ato"
 import Power from "generics/interfaces.ato"
 import CAN_TTL from "generics/interfaces.ato"
 import CAN from "generics/interfaces.ato"
+
+
 component R0402 from Resistor:
-    footprint = "R0402"
+    package = "0402"
     value = 1kohm +/- 5%
+
+
 component C0402 from Capacitor:
-    footprint = "C0402"
+    package = "0402"
     value = 100nF +/- 25%
+
 
 module STM32G431CBU6_kit:
     # Microcontroller
