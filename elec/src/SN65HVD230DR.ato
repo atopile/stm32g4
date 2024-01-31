@@ -49,7 +49,7 @@ module can_xcvr:
 
     # Bypass capacitors
     c_bp = new Capacitor
-    c_bp.package = "0402"
+    c_bp.footprint = "C0402"
     c_bp.value = 100nF +/- 25%
     c_bp.p1 ~ v_3_3
     c_bp.p2 ~ gnd
@@ -58,17 +58,17 @@ module can_xcvr:
     signal v_mid
     xcvr.VREF ~ v_mid
     r_term_h = new Resistor
-    r_term_h.package = "0402"
+    r_term_h.footprint = "R0402"
     r_term_h.value = 56ohm +/- 10%
     r_term_h.p1 ~ CANH
     r_term_h.p2 ~ v_mid
     r_term_l = new Resistor
-    r_term_l.package = "0402"
+    r_term_l.footprint = "R0402"
     r_term_l.value = 56ohm +/- 10%
     r_term_l.p1 ~ CANL
     r_term_l.p2 ~ v_mid
     c_term = new Capacitor
-    c_term.package = "0402"
+    c_term.footprint = "R0402"
     c_term.value = 10nF +/- 25%
     c_term.mpn = "C15195"
     c_term.p1 ~ v_mid
