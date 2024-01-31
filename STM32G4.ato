@@ -110,3 +110,24 @@ module STM32G431CBU6_kit:
     usb.cc1 ~ micro.PA9 #DBCC1 only needed to power up with no other voltage source
     usb.cc2 ~ micro.PB4 #CC2 needed for PD comms
     usb.cc2 ~ micro.PA10 #DBCC2 only needed to power up with no other voltage source
+
+    # SPI interface
+    spi = new SPI
+    spi.mosi ~ micro.PB15
+    spi.miso ~ micro.PB14
+    spi.sck ~ micro.PB13
+    spi.cs ~ micro.PB11
+
+    # I2C Interface
+    i2c = new I2C
+    i2c.sda ~ micro.PB9
+    i2c.scl ~ micro.PB8_BOOT0
+
+    # i2c pullups
+    # sda_pullup = new Resistor
+    # sda_pullup.p1 ~ i2c.sda
+    # sda_pullup.p2 ~ power.vcc
+
+    # scl_pullup = new Resistor
+    # scl_pullup.p1 ~ i2c.scl
+    # scl_pullup.p2 ~ power.vcc
