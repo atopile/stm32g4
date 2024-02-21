@@ -153,6 +153,9 @@ module STM32G431CBU6_BASE:
     bypass_cap_4.package = "0402"
     bypass_cap_5.package = "0402"
 
+    boot0_pulldown.value = 1kohm +/- 10%
+    boot0_pulldown.package = "0402"
+
     # Connect caps
     power ~ bypass_cap_1.power
     power ~ bypass_cap_2.power
