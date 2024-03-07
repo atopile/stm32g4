@@ -1,7 +1,6 @@
 ato-version: v0.3.0
 dependencies:
-- generics
+- generics ^v3.0.0
 builds:
   default:
     entry: "STM32G4.ato:STM32G431CBU6_BASE"
-- generics ^v3.0.0
