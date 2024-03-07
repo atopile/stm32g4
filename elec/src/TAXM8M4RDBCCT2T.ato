@@ -4,8 +4,8 @@ component TAXM8M4RDBCCT2T:
     lcsc_id = "C400090"
     mpn = "C400090"
     # pins
-    signal gnd ~ pin 4
-    gnd ~ pin 2
-    signal in ~ pin 3
-    signal out ~ pin 1
+    signal _4 ~ pin 4
+    signal _2 ~ pin 2
+    signal _3 ~ pin 3
+    signal _1 ~ pin 1
 
